@@ -93,7 +93,7 @@ test = X_drugs[50000:65000]
 val = X_drugs[65000:]
 
 
-drug_encoding = ['CNN']
+drug_encoding = ['CNN','MPNN']
 # drug_encoding = 'CNN'
 train = data_process_multimodel(X_drug=train, y=y[:50000],
                                            drug_encoding=drug_encoding,

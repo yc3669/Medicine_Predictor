@@ -202,7 +202,7 @@ class DDI_Model:
 			print('--- Data Preparation ---')
 
 		params = {'batch_size': BATCH_SIZE,
-	    		'shuffle': True,
+	    		'shuffle': False,
 	    		'num_workers': self.config['num_workers'],
 	    		'drop_last': False}
 		if (self.drug_encoding == "MPNN"):
@@ -235,7 +235,7 @@ class DDI_Model:
 		model_max = copy.deepcopy(self.model)
 
 		valid_metric_record = []
-		valid_metric_header = ["# epoch"] 
+		valid_metric_header = ["# epoch"]
 		if self.binary:
 			valid_metric_header.extend(["AUROC", "AUPRC", "F1"])
 		else:
@@ -247,6 +247,7 @@ class DDI_Model:
 		t_start = time() 
 		for epo in range(train_epoch):
 			for i, (v_d, v_p, label) in enumerate(training_generator):
+
 				if self.drug_encoding in ["MPNN", 'Transformer', 'DGL_GCN', 'DGL_NeuralFP', 'DGL_GIN_AttrMasking', 'DGL_GIN_ContextPred', 'DGL_AttentiveFP']:
 					v_d = v_d
 					v_p = v_p

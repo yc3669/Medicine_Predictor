@@ -701,7 +701,7 @@ class data_process_DDI_loader(data.Dataset):
 	def __getitem__(self, index):
 		'Generates one sample of data'
 		index = self.list_IDs[index]
-		v_d = self.df.iloc[index]['drug_encoding_1']        
+		v_d = self.df.iloc[index]['drug_encoding_1']
 		if self.config['drug_encoding'] == 'CNN' or self.config['drug_encoding'] == 'CNN_RNN':
 			v_d = drug_2_embed(v_d)
 		elif self.config['drug_encoding'] in ['DGL_GCN', 'DGL_NeuralFP', 'DGL_GIN_AttrMasking', 'DGL_GIN_ContextPred', 'DGL_AttentiveFP']:

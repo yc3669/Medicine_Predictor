@@ -85,6 +85,13 @@ class CNN(nn.Sequential):
 
 			self.fc1 = nn.Linear(n_size_p, config['hidden_dim_protein'])
 
+		# for i, layer in enumerate(self.conv):
+		# 	nn.init.constant_(layer.weight, 0.1)
+		# 	if layer.bias is not None:
+		# 		nn.init.constant_(layer.bias, 0.1)
+		# nn.init.constant_(self.fc1.weight, 0.1)
+		# nn.init.constant_(self.fc1.bias, 0.1)
+
 	def _get_conv_output(self, shape):
 		bs = 1
 		input = Variable(torch.rand(bs, *shape))

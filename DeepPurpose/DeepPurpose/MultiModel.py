@@ -1,3 +1,4 @@
+import numpy
 import torch
 from torch.autograd import Variable
 import torch.nn.functional as F
@@ -36,7 +37,7 @@ class Classifier(nn.Sequential):
     def __init__(self, model_drug, configlist):
         super(Classifier, self).__init__()
 
-        self.model_drug = model_drug
+        self.model_drug = nn.ModuleList(model_drug)
 
         self.dropout = nn.Dropout(0.1)
 
@@ -159,12 +160,12 @@ class Property_Prediction:
 
     def __init__(self, configlist):
         model_number = len(configlist)
-        drug_encoding_list = [''.join(random.choices(string.ascii_lowercase, k=3)) for _ in range(model_number)]
+        drug_encoding_list = []
         self.model_drug = []
         for i in range(model_number):
             config = configlist[i]
             drug_encoding = config['drug_encoding']
-
+            drug_encoding_list.append(drug_encoding)
             if drug_encoding == 'Morgan' or drug_encoding == 'ErG' or drug_encoding == 'Pubchem' or drug_encoding == 'Daylight' or drug_encoding == 'rdkit_2d_normalized' or drug_encoding == 'ESPF':
                 # Future TODO: support multiple encoding scheme for static input
                 self.model_drug.append(MLP(config['input_dim_drug'], config['hidden_dim_drug'], config['mlp_hidden_dims_drug']))
@@ -364,7 +365,8 @@ class Property_Prediction:
                 v_ds = []
                 for k in range(len(combines)):
                     v_d = combines[k][0]
-                    v_d = v_d[k].float().to(self.device)
+                    v_d = v_d[k]
+                    # v_d = v_d[k].float().to(self.device)
                     v_ds.append(v_d)
                 label = combines[0][1]
                 # if self.drug_encoding in ["MPNN", 'Transformer', 'DGL_GCN', 'DGL_NeuralFP', 'DGL_GIN_AttrMasking',
